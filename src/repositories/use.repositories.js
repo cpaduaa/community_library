@@ -1,6 +1,6 @@
 import db from '../config/database.js';
 
-db.rin(`
+db.run(`
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
@@ -23,7 +23,7 @@ function createUserRepository(newUser) {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve({message: 'user created'})
+                    resolve({id: this.lastID, ...newUser})
                 }
             }
         );
