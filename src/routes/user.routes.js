@@ -11,6 +11,10 @@ router.post(
      validate(userSchema), 
     userControllers.createUserController
 );
+router.post(
+    "/users/login", 
+    userControllers.loginUserController
+);
 router.get("/users", userControllers.findUserByEmailController);
 router.get(
     "/users/:id", 
