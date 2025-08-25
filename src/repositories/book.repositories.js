@@ -89,11 +89,29 @@ function deleteBookRepository(bookId) {
     });
 }
 
+function searchBooksRepository(search) {
+    return new Promise((resolve, reject) => {
+        db.all(`
+            SELECT * FROM books WHERE title = ? OR author = ?
+        `, [`%${search}%`, `%${search}%`],
+        (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        }
+        );
+    });
+}
+
+
 export default {
     createBookRepository,
     findAllBooksRepositorye,
     findBookByIdRepository,
     updateBookRepository,
-    deleteBookRepository
+    deleteBookRepository,
+    searchBooksRepository
 
 }

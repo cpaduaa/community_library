@@ -14,9 +14,13 @@ router.post(
     authMiddleware, 
     bookControllers.createBookController
 );
-
+router.get("/books/search", bookControllers.searchBooksController);
 router.get("/books/:id", validateBookId, bookControllers.findBookByIdController);
-routerpatch("/books/:id", validateBookId, bookControllers.updateBookController);
-router.delete("/books/:id", validateBookId, bookControllers.deleteBookController);
+router.patch("/books/:id", validateBookId, bookControllers.updateBookController);
+router.delete(
+    "/books/:id", 
+    validateBookId, 
+    bookControllers.deleteBookController
+);
 
 export default router;
