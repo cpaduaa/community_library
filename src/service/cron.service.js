@@ -6,13 +6,13 @@ import loanRepository from "../repositories/loan.repositories.js";
 cron.schedule("12 * * * *", async () => {
   console.log("Running daily job to check for due dates...");
   const loans = await loanRepository.findAllLoansRepository();
-  const today = moment().startOf('day');
+  const today = moment().startOf("day");
 
-  loans.forEach((loan) => {
-    const dueDate = moment(loan.dueDate).startOf('day');
-    const reminderDate = moment(dueDate).subtract(1, "days");
-    if (today.isSame(reminderDate)) {
-        sendEmail(loan.dueDate, loan.book.title, loan.dueDate);
+  loans.forEach(async (loan) => {
+    const dueDate = moment(loan.dueDate).startOf("day");
+    const reminderDueDate = moment(dueDate).subtract(1, "days");
+    if (today.isSame(reminderDueDate)) {
+      sendEmail(loans.email, loans.title, loan.dueDate);
     }
   });
 });

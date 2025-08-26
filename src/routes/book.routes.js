@@ -1,26 +1,26 @@
-import bookControllers from "../controller/book.controllers.js";
+import bookController from "../controller/book.controllers.js";
 import { Router } from "express";
-import { authMiddleware } from "../middleware/auth.middleware.js";
-import {validate} from "../middlewares/validation.middlewares.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import {
+  validate,
+  validateBookId,
+} from "../middlewares/validation.middlewares.js";
 import { bookSchema } from "../schema/book.schema.js";
 
 const router = Router();
 
-router.get("/books", bookControllers.findAllBooksController);
+router.get("/", bookController.findAllBooksController);
 
+router.use(authMiddleware);
 router.post(
-    "/books", 
-    validate(bookSchema),
-    authMiddleware, 
-    bookControllers.createBookController
+  "/",
+  validate(bookSchema),
+  authMiddleware,
+  bookController.createBookController
 );
-router.get("/books/search", bookControllers.searchBooksController);
-router.get("/books/:id", validateBookId, bookControllers.findBookByIdController);
-router.patch("/books/:id", validateBookId, bookControllers.updateBookController);
-router.delete(
-    "/books/:id", 
-    validateBookId, 
-    bookControllers.deleteBookController
-);
+router.get("/search", bookController.searchBooksController);
+router.get("/:id", validateBookId, bookController.findBookByIdController);
+router.patch("/:id", validateBookId, bookController.updateBookController);
+router.delete("/:id", validateBookId, bookController.deleteBookController);
 
 export default router;

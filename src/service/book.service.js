@@ -1,48 +1,55 @@
-import bookRepositories from "../repositories/book.repositories.js";
+import bookRepository from "../repositories/book.repositories.js";
 
 async function createBookService(newBook, userId) {
-    const createdBook = await bookRepositories.createBookRepository(
-        newBook, 
-        userId
-    );
-    if (!createdBook) throw new Error("Error creating book");
-    return createdBook;
+  const createdBook = await bookRepository.createBookRepository(
+    newBook,
+    userId
+  );
+  if (!createdBook) throw new Error("Error creating Book");
+  return createdBook;
 }
 
 async function findAllBooksService() {
-    const books = await bookRepositories.findAllBooksRepositorye();
-    return books;
+  const books = await bookRepository.findAllBooksRepository();
+  return books;
 }
 
 async function findBookByIdService(bookId) {
-    const book = await bookRepositories.findBookByIdRepository(bookId);
-    if (!book) throw new Error("Book not found");
-    return book;
+  const book = await bookRepository.findBookByIdRepository(bookId);
+  if (!book) throw new Error("Book not found");
+  return book;
 }
 
-async function updateBookService(bookId, updatedBook) {
-    const book = await bookRepositories.updateBookRepository(bookId);
-    if (!book) throw new Error("Book not found");
-    if (book.userId !== userId) throw new Error("Unauthorized");
-    const response = await bookRepositories.updateBookRepository(
-        updatedBook, 
-        bookId
-    );
-    return response;
+async function updateBookService(updatedBook, bookId, userId) {
+  const book = await bookRepository.findBookByIdRepository(bookId);
+  if (!book) throw new Error("Book not found");
+  if (book.userId !== userId) throw new Error("Unauthorized");
+  const response = await bookRepository.updateBookRepository(
+    updatedBook,
+    bookId
+  );
+  return response;
 }
 
 async function deleteBookService(bookId, userId) {
-    const book = await bookRepositories.findBookByIdRepository(bookId);
-    if (!book) throw new Error("Book not found");
-    if (book.userId !== userId) throw new Error("Unauthorized");
-    const response = await bookRepositories.deleteBookRepository(bookId);
-    return response;
+  const book = await bookRepository.findBookByIdRepository(bookId);
+  if (!book) throw new Error("Book not found");
+  if (book.userId !== userId) throw new Error("Unauthorized");
+  const response = await bookRepository.deleteBookRepository(bookId);
+  return response;
+}
+
+async function searchBooksService(search) {
+  if (!search) return await bookRepository.findAllBooksRepository();
+  const books = await bookRepository.searchBooksRepository(search);
+  return books;
 }
 
 export default {
-    createBookService,
-    findAllBooksService,
-    findBookByIdService,
-    updateBookService,
-    deleteBookService
+  createBookService,
+  findAllBooksService,
+  findBookByIdService,
+  updateBookService,
+  deleteBookService,
+  searchBooksService
 }
